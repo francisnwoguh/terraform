@@ -1,15 +1,7 @@
-variable "env" {}
 variable "azs" {}
-variable "" {}
-variable "enable_dns_hostnames" {
-  description = "should be true to enable DNS hostname in vpc"
-  default = bool
-}
-
-variable "enable_dns_support" {
-  description = "should be true to enable DNS support in vpc"
-  default = bool
-}
+variable "name" {}
+variable "enable_dns_hostnames" {}
+variable "enable_dns_support" {}
 
 variable "vpc_cidr" {
   type = string
@@ -28,7 +20,7 @@ variable "map_public_ip_on_launch" {
 }
 
 #private subnet
-variable "private_subnet" {}
+variable "private_subnets" {}
 variable "enable_nat_gateway" {
   type = bool
   default = true

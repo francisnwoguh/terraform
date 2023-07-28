@@ -1,3 +1,5 @@
+variable "name" {}
+
 variable "http_port" {
   type = string
   default = "80"
@@ -9,8 +11,8 @@ variable "ssh_port" {
 }
 
 variable "cidr_block" {
-  type = string
-  default = "0.0.0.0/0"
+  type = list(string)
+  default = ["0.0.0.0/0"]
 }
 
 variable "protocol" {
@@ -18,4 +20,6 @@ variable "protocol" {
   default = "tcp"
 }
 
-variable "vpc_id" {}
+variable "vpc_id" {
+  type = string
+}

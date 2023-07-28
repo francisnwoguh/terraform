@@ -4,13 +4,16 @@ resource "aws_vpc" "net-vpc" {
   instance_tenancy = var.instance_tenancy
   enable_dns_hostnames = var.enable_dns_hostnames
   enable_dns_support = var.enable_dns_support
+  tags = {
+    Name = "${var.name}"
+  }
 }
 
 #igw
 resource "aws_internet_gateway" "net-igw" {
   vpc_id = aws_vpc.net-vpc.id
   tags = {
-    Name = "${var.env}-igw"
+    Name = "${var.name}-igw"
   }
 }
 
@@ -22,14 +25,14 @@ resource "aws_subnet" "public_subnets" {
   count = length(var.azs)
   vpc_id = aws_vpc.net-vpc.id
   tags = {
-    Name = "${var.env}-public_subnet-${count.index+1}"
+    Name = "${var.name}-public_subnet-${count.index+1}"
   }
 }
 
 resource "aws_route_table" "public_rt" {
   vpc_id = aws_vpc.net-vpc.id
   tags = {
-    Name = "${var.env}-public-rt"
+    Name = "${var.name}-public-rt"
   }
 }
 
@@ -52,15 +55,15 @@ resource "aws_subnet" "private_subnets" {
   count = length(var.azs)
   vpc_id = aws_vpc.net-vpc.id
   tags = {
-    Name = "${var.env}-private_subnet-${count.index+1}"
+    Name = "${var.name}-private_subnet-${count.index+1}"
   }
 }
 
 resource "aws_route_table" "private_rt" {
   vpc_id = aws_vpc.net-vpc.id
-  count = length(var.private_subnet)
+  count = length(var.private_subnets)
   tags = {
-    Name = "${var.env}-private-rt"
+    Name = "${var.name}-private-rt"
   }
 }
 
@@ -73,7 +76,7 @@ resource "aws_route_table_association" "private" {
 resource "aws_eip" "eip" {
   domain = "vpc"
   tags = {
-    Name = "${var.env}-eip"
+    Name = "${var.name}-eip"
   }
 }
 
@@ -83,7 +86,7 @@ resource "aws_nat_gateway" "natgw" {
   allocation_id = aws_eip.eip.id
   subnet_id = element(aws_subnet.public_subnets.*.id, count.index)
   tags = {
-    Name = "${var.env}-natgw"
+    Name = "${var.name}-natgw"
   }
   depends_on = [ aws_internet_gateway.net-igw ]
 }

@@ -47,4 +47,3 @@ resource "aws_security_group" "http_sg" {
     Name = "http-sg"
   }
 }
-

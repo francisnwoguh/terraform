@@ -1,5 +1,5 @@
 variable "name" {
-  default = "project-vpc"
+  default = ""
 }
 
 variable "azs" {
@@ -23,6 +23,22 @@ variable "enable_dns_hostname" {
 }
 
 variable "enable_dns_support" {
+  type    = bool
+  default = true
+}
+
+#instance variables
+variable "instance_type" {
+  type    = string
+  default = "t2.micro"
+}
+
+variable "vpc_security_group_ids" {
+  type    = list(string)
+  default = [""]
+}
+
+variable "associate_public_ip_address" {
   type    = bool
   default = true
 }
